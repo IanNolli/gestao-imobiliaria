@@ -1,0 +1,15 @@
+digraph C1 {
+  rankdir=TB; graph [fontname="Helvetica", fontsize=12, nodesep=0.6, ranksep=0.7, label="Nível 1 — Diagrama de Contexto (C4)", labelloc=t];
+  node [fontname="Helvetica", fontsize=11, shape=box, style="rounded,filled", color="#3b5b92", fillcolor="#dce6f5", margin="0.2,0.12"];
+  edge [fontname="Helvetica", fontsize=9, color="#555555"];
+  adm  [label="Administrador\n[Pessoa]\nGerencia usuários e parâmetros", shape=box, fillcolor="#fde9c9", color="#b07a1e"];
+  cor  [label="Corretor / Atendente\n[Pessoa]\nCadastra imóveis, pessoas\ne contratos", fillcolor="#fde9c9", color="#b07a1e"];
+  fin  [label="Analista Financeiro\n[Pessoa]\nRegistra recebimentos\ne repasses", fillcolor="#fde9c9", color="#b07a1e"];
+  sis  [label="Sistema de Gestão Imobiliária\n[Sistema de software]\nImóveis, contratos de locação\ne recebimentos", fillcolor="#3b5b92", fontcolor="white", color="#22385e"];
+  inq  [label="Inquilino / Proprietário\n[Pessoa externa]\nRecebe avisos e extratos", fillcolor="#eeeeee", color="#888888"];
+  mail [label="Serviço de E-mail\n[Sistema externo]", fillcolor="#eeeeee", color="#888888"];
+  pag  [label="Banco / Gateway PIX-Boleto\n[Sistema externo]", fillcolor="#eeeeee", color="#888888"];
+  adm -> sis [label="usa (HTTPS)"]; cor -> sis [label="usa (HTTPS)"]; fin -> sis [label="usa (HTTPS)"];
+  sis -> mail [label="envia avisos"]; sis -> pag [label="emite cobrança /\nconsulta liquidação", style=dashed];
+  mail -> inq [label="entrega e-mails"];
+}

@@ -1,0 +1,15 @@
+digraph C2 {
+  rankdir=LR; graph [fontname="Helvetica", fontsize=12, nodesep=0.5, ranksep=0.8, label="Nível 2 — Diagrama de Containers (C4)", labelloc=t];
+  node [fontname="Helvetica", fontsize=11, shape=box, style="rounded,filled", color="#3b5b92", fillcolor="#dce6f5", margin="0.2,0.12"];
+  edge [fontname="Helvetica", fontsize=9, color="#555555"];
+  usr [label="Usuários internos\n(Admin, Corretor,\nFinanceiro)", fillcolor="#fde9c9", color="#b07a1e"];
+  subgraph cluster_sys { label="Sistema de Gestão Imobiliária"; style="dashed"; color="#3b5b92"; fontname="Helvetica";
+    spa [label="Aplicação Web (SPA)\n[Container: React]\nInterface do usuário"];
+    api [label="API — Monólito Modular\n[Container: Node.js + TypeScript]\nMódulos de domínio +\nbarramento de eventos interno", fillcolor="#3b5b92", fontcolor="white"];
+    db  [label="Banco de Dados\n[Container: PostgreSQL]\n1 schema por módulo", shape=cylinder];
+  }
+  mail [label="Serviço de E-mail\n[Externo]", fillcolor="#eeeeee", color="#888888"];
+  pag  [label="Gateway PIX/Boleto\n[Externo]", fillcolor="#eeeeee", color="#888888"];
+  usr -> spa [label="HTTPS"]; spa -> api [label="REST/JSON\n(JWT)"]; api -> db [label="SQL\n(schema próprio\npor módulo)"];
+  api -> mail [label="SMTP/API"]; api -> pag [label="REST (futuro)", style=dashed];
+}

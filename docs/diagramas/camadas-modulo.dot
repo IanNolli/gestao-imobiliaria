@@ -1,0 +1,11 @@
+digraph L {
+  rankdir=TB; graph [fontname="Helvetica", fontsize=12, nodesep=0.4, ranksep=0.45, label="Estrutura interna de cada módulo (camadas + inversão de dependência)", labelloc=t];
+  node [fontname="Helvetica", fontsize=10.5, shape=box, style="rounded,filled", margin="0.2,0.1", width=4.6];
+  edge [color="#555555", arrowhead=vee];
+  api  [label="api/  — contrato público do módulo\n(interface/facade + tipos dos eventos)", fillcolor="#fff4cc", color="#b59b2b"];
+  http [label="http/  — rotas REST (adaptador de entrada)", fillcolor="#e9e9e9", color="#777777"];
+  app  [label="application/  — casos de uso\n(orquestram domínio, publicam eventos)", fillcolor="#dce6f5", color="#3b5b92"];
+  dom  [label="domain/  — entidades, regras de negócio,\ninterfaces de repositório (portas)", fillcolor="#c5d6f0", color="#22385e"];
+  inf  [label="infra/  — implementações de repositório\n(memória no protótipo / PostgreSQL)", fillcolor="#e9e9e9", color="#777777"];
+  http -> app; api -> app [label=" implementado por", fontsize=9, fontname="Helvetica"]; app -> dom; inf -> dom [label=" implementa portas", fontsize=9, fontname="Helvetica"];
+}

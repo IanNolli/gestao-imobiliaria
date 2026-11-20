@@ -1,0 +1,27 @@
+digraph C3 {
+  rankdir=TB; graph [fontname="Helvetica", fontsize=12, nodesep=0.45, ranksep=0.75, label="Nível 3 — Componentes da API (módulos) e suas dependências", labelloc=t, compound=true];
+  node [fontname="Helvetica", fontsize=10.5, shape=box, style="rounded,filled", color="#3b5b92", fillcolor="#dce6f5", margin="0.18,0.1"];
+  edge [fontname="Helvetica", fontsize=9];
+  http [label="Camada HTTP / Composition Root\n(rotas, middleware JWT, injeção de dependências)", fillcolor="#e9e9e9", color="#777777"];
+  auth [label="Autenticação\n(usuários, perfis, JWT)"];
+  pes  [label="Pessoas\n(proprietários, inquilinos,\nfiadores)"];
+  imo  [label="Imóveis\n(cadastro, disponibilidade)"];
+  con  [label="Contratos de Locação\n(ciclo de vida, reajuste)", fillcolor="#c5d6f0"];
+  finm [label="Financeiro / Recebimentos\n(cobranças, pagamentos,\nencargos, repasses)", fillcolor="#c5d6f0"];
+  rel  [label="Relatórios\n(read model: inadimplência,\nocupação, recebimentos)", fillcolor="#e2f0d9", color="#4f7f3a"];
+  ntf  [label="Notificações\n(avisos por e-mail)", fillcolor="#e2f0d9", color="#4f7f3a"];
+  bus  [label="Barramento de Eventos (shared kernel)\nEventBus · Dinheiro · IDs tipados · Relógio", shape=box, style="filled", fillcolor="#fff4cc", color="#b59b2b"];
+  http -> auth [color="#777777", style=dotted, arrowhead=vee]; http -> pes [color="#777777", style=dotted, arrowhead=vee]; http -> imo [color="#777777", style=dotted, arrowhead=vee];
+  http -> con [color="#777777", style=dotted, arrowhead=vee]; http -> finm [color="#777777", style=dotted, arrowhead=vee]; http -> rel [color="#777777", style=dotted, arrowhead=vee];
+  con -> imo [label="síncrono: ImoveisApi\nreservar / liberar", color="#1f4e9a", penwidth=1.6];
+  con -> pes [label="síncrono: PessoasApi\nexiste / obterResumo", color="#1f4e9a", penwidth=1.6];
+  ntf -> pes [label="síncrono: e-mail\ndo destinatário", color="#1f4e9a", penwidth=1.2];
+  con -> bus [label="publica ContratoAtivado,\nContratoEncerrado", color="#c0392b", style=dashed];
+  finm -> bus [label="publica PagamentoRegistrado,\nCobrancaVencida", color="#c0392b", style=dashed];
+  bus -> finm [label="ContratoAtivado /\nContratoEncerrado", color="#c0392b", style=dashed];
+  bus -> rel [label="todos os eventos", color="#c0392b", style=dashed];
+  bus -> ntf [label="PagamentoRegistrado /\nCobrancaVencida", color="#c0392b", style=dashed];
+  {rank=same; auth; pes; imo;}
+  {rank=same; rel; ntf;}
+  legend [shape=plaintext, style="", fillcolor=white, label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2"><TR><TD ALIGN="LEFT"><FONT COLOR="#1f4e9a"><B>——</B></FONT> chamada síncrona via interface pública (api/)</TD></TR><TR><TD ALIGN="LEFT"><FONT COLOR="#c0392b"><B>- - -</B></FONT> evento assíncrono de domínio</TD></TR><TR><TD ALIGN="LEFT"><FONT COLOR="#777777">· · ·</FONT> composição (injeção de dependências)</TD></TR></TABLE>>];
+}
